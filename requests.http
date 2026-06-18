@@ -1,0 +1,18 @@
+@host = http://localhost:5001
+
+###
+GET {{host}}/
+
+###
+GET {{host}}/api/characters
+
+###
+POST {{host}}/api/characters
+Content-Type: application/json
+
+{
+  "name": "Muminek",
+  "description": "Mieszkaniec Doliny Muminków",
+  "species": "Muminek",
+  "isHibernating": false
+}

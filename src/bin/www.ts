@@ -1,51 +1,37 @@
-// Module dependencies.
-
-import  app from '../app';
+import app from '../app';
 import debug from 'debug';
 import http from 'http';
+import { connectDB } from '../config/db';
 
-// Get port from environment and store in Express.
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-const debugLog = debug("express-ts-mongodb:server"); // Tworzy instancję loggera
+const debugLog = debug("express-ts-mongodb:server");
 
-// Create HTTP server.
 const server = http.createServer(app);
 
-// Listen on provided port, on all network interfaces.
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+async function startServer() {
+  await connectDB();
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+}
 
-// Normalize a port into a number, string, or false.
+startServer().catch((error) => {
+  console.error('Błąd startu serwera:', error);
+  process.exit(1);
+});
+
 function normalizePort(val: string): number | string | false {
   const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
+  if (isNaN(port)) return val;
+  if (port >= 0) return port;
   return false;
 }
 
-// Event listener for HTTP server "error" event.
 function onError(error: NodeJS.ErrnoException) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  const bind = typeof port === 'string'
-      ? 'Pipe ' + port
-      : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
+  if (error.syscall !== 'listen') throw error;
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
@@ -60,11 +46,8 @@ function onError(error: NodeJS.ErrnoException) {
   }
 }
 
-// Event listener for HTTP server "listening" event.
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-      ? 'pipe ' + addr
-      : 'port ' + addr?.port;
-  debug('Listening on ' + bind);
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr?.port;
+  console.log('Serwer nasłuchuje na ' + bind);
 }
