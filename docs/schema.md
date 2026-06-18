@@ -23,3 +23,21 @@ Reprezentuje przedmiot należący do postaci.
 | `name` | `string` | Nazwa artefaktu |
 | `description` | `string` | Opis artefaktu |
 | `owner` | `ObjectId` | Referencja do właściciela (`Character`) |
+
+---
+
+Jeśli postać zostanie usunięta, jej artefakty pozostają w bazie z `owner: null`.
+
+## Endpointy
+
+### Characters
+| Metoda | Ścieżka | Opis |
+|--------|---------|------|
+| GET | `/api/characters` | Pobierz wszystkie postaci |
+| POST | `/api/characters` | Utwórz nową postać |
+
+### Artifacts
+| Metoda | Ścieżka | Opis |
+|--------|---------|------|
+| GET | `/api/artifacts` | Pobierz wszystkie artefakty |
+| POST | `/api/artifacts` | Utwórz nowy artefakt |
