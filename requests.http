@@ -16,3 +16,15 @@ Content-Type: application/json
   "species": "Muminek",
   "isHibernating": false
 }
+
+###
+GET {{host}}/api/artifacts
+
+###
+POST {{host}}/api/artifacts
+Content-Type: application/json
+
+{
+  "name": "Kapelusz Tajemniczego Pana",
+  "description": "Zamienia rzeczy w chmury"
+}
